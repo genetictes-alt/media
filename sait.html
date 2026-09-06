@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генетический тест по отпечаткам — узнай себя!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0a1a;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* GLASSMORPHISM + NEON */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .neon-glow {
+            box-shadow: 0 0 30px rgba(255, 200, 50, 0.3);
+        }
+        /* HEADER */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(11, 10, 26, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-weight: 400;
+            -webkit-text-fill-color: #fff;
+            background: none;
+        }
+        nav a {
+            color: #bbb;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+            position: relative;
+        }
+        nav a:hover {
+            color: #f7c948;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f7c948;
+            transition: 0.3s;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .hamburger {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #fff;
+        }
+        /* HERO */
+        .hero {
+            padding: 80px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(247, 201, 72, 0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .hero-text {
+            flex: 1 1 500px;
+        }
+        .hero-text .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            color: #0b0a1a;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(247, 201, 72, 0.3);
+        }
+        .hero-text h1 {
+            font-size: 54px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-text p {
+            font-size: 20px;
+            color: #ccc;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+        .hero-text .cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            color: #0b0a1a;
+            padding: 18px 45px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 18px;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(247, 201, 72, 0.4);
+            letter-spacing: 0.5px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 45px rgba(247, 201, 72, 0.6);
+        }
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: #fff;
+            padding: 16px 35px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+        .btn-secondary:hover {
+            border-color: #f7c948;
+            color: #f7c948;
+            transform: translateY(-4px);
+        }
+        .hero-image {
+            flex: 1 1 400px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-image svg {
+            width: 100%;
+            max-width: 400px;
+            filter: drop-shadow(0 20px 60px rgba(247, 201, 72, 0.2));
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        /* Статистика */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-item .number {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-item .label {
+            color: #aaa;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 40px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .section-title .highlight {
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-sub {
+            text-align: center;
+            font-size: 18px;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        /* Advantages */
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .advantage-card {
+            padding: 30px 25px;
+            text-align: center;
+            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(8px);
+        }
+        .advantage-card:hover {
+            transform: translateY(-10px);
+            border-color: #f7c948;
+            box-shadow: 0 20px 50px rgba(247, 201, 72, 0.1);
+        }
+        .advantage-card .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .advantage-card h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .advantage-card p {
+            color: #bbb;
+            font-size: 15px;
+        }
+
+        /* How it works */
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            counter-reset: step;
+        }
+        .step-item {
+            flex: 1 1 220px;
+            max-width: 280px;
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+            position: relative;
+        }
+        .step-item:hover {
+            border-color: #f7c948;
+            transform: scale(1.03);
+        }
+        .step-item .step-num {
+            font-size: 48px;
+            font-weight: 900;
+            color: rgba(247, 201, 72, 0.15);
+            margin-bottom: 5px;
+        }
+        .step-item h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .step-item p {
+            color: #bbb;
+            font-size: 15px;
+        }
+
+        /* Prices */
+        .prices {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 80px 0;
+        }
+        .price-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .price-card {
+            flex: 1 1 280px;
+            max-width: 340px;
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 30px;
+            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        .price-card.popular {
+            border-color: #f7c948;
+            background: rgba(247, 201, 72, 0.05);
+            transform: scale(1.02);
+        }
+        .price-card.popular::before {
+            content: '🔥 САМЫЙ ПОПУЛЯРНЫЙ';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f7c948, #ff6b6b);
+            color: #0b0a1a;
+            padding: 4px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .price-card:hover {
+            transform: translateY(-8px);
+            border-color: #f7c948;
+            box-shadow: 0 20px 60px rgba(247, 201, 72, 0.1);
+        }
+        .price-card .price {
+            font-size: 48px;
+            font-weight: 900;
+            color: #f7c948;
+            margin: 15px 0;
+        }
+        .price-card .price small {
+            font-size: 20px;
+            font-weight: 400;
+            color: #aaa;
+        }
+        .price-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0;
+            padding: 0;
+        }
+        .price-card ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ddd;
+        }
+        .price-card ul li::before {
+            content: "✦";
+            color: #f7c948;
+            font-weight: 700;
+        }
+        .price-card .btn {
+            width: 100%;
+            padding: 14px;
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .testimonial {
+            padding: 30px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #f7c948;
+        }
+        .testimonial p {
+            font-style: italic;
+            color: #ddd;
+            font-size: 17px;
+        }
+        .testimonial .author {
+            margin-top: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .testimonial .author span {
+            font-weight: 400;
+            color: #888;
+        }
+
+        /* FAQ */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .faq-item:hover {
+            border-color: rgba(247, 201, 72, 0.3);
+        }
+        .faq-item .question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .faq-item .question .arrow {
+            transition: 0.3s;
+            font-size: 22px;
+            color: #f7c948;
+        }
+        .faq-item .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.4s;
+            color: #bbb;
+            padding-top: 0;
+        }
+        .faq-item.active .answer {
+            max-height: 200px;
+            padding-top: 15px;
+        }
+        .faq-item.active .question .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Form */
+        .form-section {
+            background: linear-gradient(135deg, #0b0a1a, #1f1b3a);
+            padding: 80px 0;
+        }
+        .form-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 40px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .form-info {
+            flex: 1 1 300px;
+        }
+        .form-info h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .form-info ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+        .form-info ul li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ccc;
+        }
+        .form-info ul li::before {
+            content: "✓";
+            color: #f7c948;
+            font-weight: 900;
+            font-size: 20px;
+        }
+        .form-fields {
+            flex: 2 1 400px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #ddd;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+            outline: 1px solid transparent;
+        }
+        .form-group input::placeholder {
+            color: #888;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: 2px solid #f7c948;
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .form-group .btn-primary {
+            width: 100%;
+            padding: 16px;
+            font-size: 20px;
+        }
+        .form-guarantee {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            color: #888;
+            font-size: 14px;
+        }
+        .form-guarantee span {
+            font-size: 24px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #888;
+        }
+        footer a {
+            color: #f7c948;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 10px;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav a {
+                margin: 0;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-text h1 {
+                font-size: 36px;
+            }
+            .hero {
+                padding: 40px 0 60px;
+            }
+            .section-title {
+                font-size: 30px;
+            }
+            .form-wrapper {
+                padding: 25px;
+            }
+            .price-card.popular {
+                transform: scale(1);
+            }
+            .stats {
+                gap: 20px;
+            }
+            .stat-item .number {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">🧬 Генетик<span>Тест</span></div>
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
+            <nav id="navMenu">
+                <a href="#advantages">О методе</a>
+                <a href="#how">Как работает</a>
+                <a href="#prices">Цены</a>
+                <a href="#testimonials">Отзывы</a>
+                <a href="#faq">FAQ</a>
+                <a href="#form">Заказать</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-text">
+                <div class="badge">🔥 СКИДКА 30% ДО КОНЦА НЕДЕЛИ</div>
+                <h1>Раскрой свой <span class="highlight">генетический код</span> по отпечаткам пальцев</h1>
+                <p>Узнай свои врождённые таланты, тип личности и зоны роста — без похода в клинику. Просто отправь фото отпечатков и получи детальный отчёт через 24 часа.</p>
+                <div class="cta-group">
+                    <a href="#form" class="btn-primary">Пройти тест →</a>
+                    <a href="#how" class="btn-secondary">Как это работает</a>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="number">5 000+</div>
+                        <div class="label">довольных клиентов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">97%</div>
+                        <div class="label">точность анализа</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number">24 ч</div>
+                        <div class="label">среднее время отчёта</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="80" stroke="url(#fingerGrad)" stroke-width="4" opacity="0.3"/>
+                    <circle cx="100" cy="100" r="60" stroke="url(#fingerGrad)" stroke-width="3" opacity="0.2"/>
+                    <circle cx="100" cy="100" r="40" stroke="url(#fingerGrad)" stroke-width="3" opacity="0.3"/>
+                    <circle cx="100" cy="100" r="20" fill="url(#fingerGrad)" opacity="0.4"/>
+                    <circle cx="100" cy="100" r="8" fill="#f7c948"/>
+                    <path d="M70 80 Q90 60, 110 80" stroke="url(#fingerGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M65 100 Q90 85, 115 100" stroke="url(#fingerGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M70 120 Q90 105, 110 120" stroke="url(#fingerGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                    <defs>
+                        <linearGradient id="fingerGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#f7c948"/>
+                            <stop offset="100%" stop-color="#ff6b6b"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVANTAGES -->
+    <section id="advantages" style="padding: 80px 0;">
+        <div class="container">
+            <h2 class="section-title">Почему <span class="highlight">это работает</span></h2>
+            <p class="section-sub">Дерматоглифика — наука о папиллярных узорах. Наш ИИ-алгоритм анализирует более 100 параметров, чтобы составить ваш уникальный профиль.</p>
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <span class="icon">🧠</span>
+                    <h3>Тип мышления</h3>
+                    <p>Определяем доминантное полушарие и стиль обработки информации.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon">🎯</span>
+                    <h3>Скрытые таланты</h3>
+                    <p>Выявляем врождённые способности к музыке, спорту, науке и творчеству.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon">❤️</span>
+                    <h3>Эмоциональный IQ</h3>
+                    <p>Узнай свою стрессоустойчивость и модели поведения в отношениях.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon">⚡</span>
+                    <h3>Мгновенный результат</h3>
+                    <p>Отчёт уже через 24 часа. Полная анонимность и защита данных.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" style="background: rgba(255, 255, 255, 0.02); padding: 80px 0;">
+        <div class="container">
+            <h2 class="section-title">Как это <span class="highlight">работает</span></h2>
+            <p class="section-sub">Три простых шага — и ты получишь персональный генетический отчёт.</p>
+            <div class="steps">
+                <div class="step-item">
+                    <div class="step-num">01</div>
+                    <h4>Сделай фото</h4>
+                    <p>Сфотографируй все 10 пальцев на камеру смартфона при хорошем освещении.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">02</div>
+                    <h4>Отправь нам</h4>
+                    <p>Загрузи изображения через форму заказа — это займёт 2 минуты.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">03</div>
+                    <h4>Получи отчёт</h4>
+                    <p>Через 24 часа мы пришлём PDF с расшифровкой твоих генетических особенностей.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICES -->
+    <section id="prices" class="prices">
+        <div class="container">
+            <h2 class="section-title">Выбери свой <span class="highlight">тариф</span></h2>
+            <p class="section-sub">Для всех тарифов действует скидка 30% при оплате сегодня.</p>
+            <div class="price-cards">
+                <div class="price-card">
+                    <h3>Базовый</h3>
+                    <div class="price">2 990 <small>₽</small></div>
+                    <ul>
+                        <li>Анализ 10 отпечатков</li>
+                        <li>Тип личности (MBTI)</li>
+                        <li>Базовый PDF-отчёт</li>
+                        <li>Срок: 48 часов</li>
+                    </ul>
+                    <a href="#form" class="btn-primary" style="display:block;text-align:center;">Выбрать</a>
+                </div>
+                <div class="price-card popular">
+                    <h3>Оптимальный</h3>
+                    <div class="price">5 490 <small>₽</small></div>
+                    <ul>
+                        <li>Всё из Базового</li>
+                        <li>10+ генетических талантов</li>
+                        <li>Эмоциональный профиль</li>
+                        <li>Рекомендации по развитию</li>
+                        <li>Срок: 24 часа</li>
+                    </ul>
+                    <a href="#form" class="btn-primary" style="display:block;text-align:center;">Выбрать</a>
+                </div>
+                <div class="price-card">
+                    <h3>VIP</h3>
+                    <div class="price">9 900 <small>₽</small></div>
+                    <ul>
+                        <li>Всё из Оптимального</li>
+                        <li>Видео-консультация с генетиком</li>
+                        <li>Анализ совместимости</li>
+                        <li>Индивидуальные рекомендации</li>
+                        <li>Срок: 12 часов</li>
+                    </ul>
+                    <a href="#form" class="btn-primary" style="display:block;text-align:center;">Выбрать</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="padding: 80px 0;">
+        <div class="container">
+            <h2 class="section-title">Реальные <span class="highlight">отзывы</span></h2>
+            <p class="section-sub">Более 5000 человек уже открыли свой потенциал.</p>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p>«Результат превзошёл ожидания! Я всегда сомневался в выборе профессии, а отчёт указал на мои сильные стороны. Теперь я занимаюсь любимым делом.»</p>
+                    <div class="author">Алексей К. <span>— IT-специалист</span></div>
+                </div>
+                <div class="testimonial">
+                    <p>«Сделали тест для ребёнка — попали в точку. Помогло выбрать кружки и понять, как с ним общаться. Спасибо команде!»</p>
+                    <div class="author">Марина Д. <span>— мама двоих детей</span></div>
+                </div>
+                <div class="testimonial">
+                    <p>«Очень точный анализ. Подтвердил мою интуицию по поводу смены работы. Теперь я уверен в своём будущем.»</p>
+                    <div class="author">Екатерина С. <span>— маркетолог</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" style="background: rgba(255, 255, 255, 0.02); padding: 80px 0;">
+        <div class="container">
+            <h2 class="section-title">Часто задаваемые <span class="highlight">вопросы</span></h2>
+            <p class="section-sub">Всё, что вы хотели знать о генетическом тестировании по отпечаткам.</p>
+            <div class="faq-list">
+                <div class="faq-item active">
+                    <div class="question">
+                        <span>Насколько точен этот метод?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">Наш алгоритм обучен на выборке из более чем 100 000 образцов. Точность подтверждена клиническими исследованиями и составляет 97%.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Можно ли пройти тест ребёнку?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">Да, тест подходит для детей от 5 лет. Отпечатки пальцев формируются внутриутробно и не меняются в течение жизни.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Как я получу результаты?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">Мы вышлем вам персонализированный PDF-отчёт на указанную электронную почту. Для VIP-тарифа также доступна видеоконсультация.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Безопасно ли передавать фотографии отпечатков?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">Да, мы используем шифрование и не храним ваши данные после обработки. Полная конфиденциальность гарантирована.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM -->
+    <section id="form" class="form-section">
+        <div class="container">
+            <h2 class="section-title">Готовы узнать <span class="highlight">себя</span>?</h2>
+            <p class="section-sub">Заполните форму, и мы пришлём инструкцию по съёмке отпечатков. Начните свой путь к самопознанию!</p>
+            <div class="form-wrapper">
+                <div class="form-info">
+                    <h3>🧬 Что вы получите?</h3>
+                    <ul>
+                        <li>Детальный анализ 40+ генетических маркеров</li>
+                        <li>Персональные рекомендации по развитию</li>
+                        <li>Поддержка на каждом этапе</li>
+                        <li>Гарантия возврата средств, если результат не устроит</li>
+                    </ul>
+                </div>
+                <div class="form-fields">
+                    <form id="orderForm" onsubmit="return submitForm(event)">
+                        <div class="form-group">
+                            <label for="name">Ваше имя</label>
+                            <input type="text" id="name" placeholder="Иван Петров" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="ivan@mail.ru" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" placeholder="+7 (900) 123-45-67" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tariff">Выберите тариф</label>
+                            <select id="tariff">
+                                <option value="Базовый">Базовый — 2 990 ₽</option>
+                                <option value="Оптимальный" selected>Оптимальный — 5 490 ₽</option>
+                                <option value="VIP">VIP — 9 900 ₽</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Заказать тест со скидкой</button>
+                        </div>
+                        <div class="form-guarantee">
+                            <span>🔒</span> Ваши данные защищены. Никакого спама.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 ГенетикТест. Все права защищены. <a href="#">Политика конфиденциальности</a></p>
+            <p style="margin-top: 8px; font-size: 14px;">📍 Москва, ул. Тверская, 12 | ✉️ info@genetictest.ru | 📞 +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        function submitForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const tariff = document.getElementById('tariff').value;
+            if (name && email && phone) {
+                alert(`Спасибо, ${name}! Ваша заявка на тариф "${tariff}" принята. Мы отправим инструкции на ${email} в ближайшее время.`);
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Пожалуйста, заполните все поля.');
+            }
+        }
+
+        // Плавный скролл
+        document.querySelectorAll('nav a, .btn-secondary').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        document.getElementById('navMenu').classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Кнопки "Выбрать" в карточках цен
+        document.querySelectorAll('.price-card .btn-primary').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('form');
+                if (form) {
+                    form.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // FAQ аккордеон
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
